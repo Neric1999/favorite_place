@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:favorite_places/models/new_place_model.dart';
 import 'package:favorite_places/provider/favorite_place_provider.dart';
+import 'package:favorite_places/widgets/image_input.dart';
+import 'package:favorite_places/widgets/location_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,10 +16,12 @@ class NewPlace extends ConsumerStatefulWidget {
 
 class _NewPlaceState extends ConsumerState<NewPlace> {
   final titleController = TextEditingController();
+  File? _selectedImage;
 
   void _savePlace() {
     if (titleController.text.isEmpty ||
-        titleController.text.trim().length > 50) {
+        titleController.text.trim().length > 50 ||
+        _selectedImage == null) {
       showDialog(
           context: context,
           builder: (ctx) {
@@ -44,6 +50,7 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
         ref.read(favoritePlaceProvider.notifier).onAddingPlace(
               Place(
                 title: titleController.text,
+                image: _selectedImage!,
               ),
             );
       });
@@ -73,6 +80,21 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
                 ),
               ),
               maxLength: 50,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ImageInput(
+              onAddImage: (image) {
+                _selectedImage = image;
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const LocationInput(),
+            const SizedBox(
+              height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

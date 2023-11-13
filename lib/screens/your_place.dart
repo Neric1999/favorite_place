@@ -14,16 +14,15 @@ class YourPlace extends StatelessWidget {
       appBar: AppBar(
         title: Text(place.title),
       ),
-      body: Container(
-        margin: const EdgeInsets.all(20),
-        child: Center(
-          child: Text(
-            place.title,
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
+      body: Stack(
+        children: [
+          Image.file(
+            place.image,
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
           ),
-        ),
+        ],
       ),
     );
   }

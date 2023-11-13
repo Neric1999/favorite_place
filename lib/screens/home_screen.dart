@@ -27,13 +27,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     Widget content = ListView.builder(
         itemCount: existingScreens.length,
         itemBuilder: (context, index) {
-          return InkWell(
+          return ListTile(
+            leading: CircleAvatar(
+              radius: 26,
+              backgroundImage: FileImage(existingScreens[index].image),
+            ),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
                 return YourPlace(place: existingScreens[index]);
               }));
             },
-            child: Padding(
+            title: Padding(
               padding: const EdgeInsets.all(15),
               child: Dismissible(
                 key: ValueKey(existingScreens[index].id),
