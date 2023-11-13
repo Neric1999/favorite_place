@@ -11,9 +11,48 @@ class NewPlace extends ConsumerStatefulWidget {
 }
 
 class _NewPlaceState extends ConsumerState<NewPlace> {
+  final titleController = TextEditingController();
+
+  void _savePlace() {
+    if (titleController.text.isEmpty ||
+        titleController.text.trim().length > 50) {
+      showDialog(
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              title: const Text('Invalid Input'),
+              content: const Text(
+                'Make sure that the title is entered and not more than 50 words.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'Okay',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                )
+              ],
+            );
+          });
+    } else {
+      setState(() {
+        ref.read(favoritePlaceProvider.notifier).onAddingPlace(
+              Place(
+                title: titleController.text,
+              ),
+            );
+      });
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final titleController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add new place'),
@@ -39,17 +78,7 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      ref.read(favoritePlaceProvider.notifier).onAddingPlace(
-                            Place(
-                              title: titleController.text,
-                            ),
-                          );
-                    });
-
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: _savePlace,
                   child: const Expanded(
                     child: Row(
                       children: [

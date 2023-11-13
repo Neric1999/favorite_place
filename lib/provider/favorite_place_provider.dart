@@ -8,7 +8,7 @@ class FavoritePlaceNotifier extends StateNotifier<List<Place>> {
 
   //Adding favorite place
   void onAddingPlace(Place newPlace) {
-    state = [...state, newPlace];
+    state = [newPlace, ...state];
   }
 }
 
